@@ -33,6 +33,8 @@ ROS-kinetic
 \
 `catkin_make`\
 \
+`source /devel/setup.bash`\
+\
 `roslaunch hongfu_bms_bringup hongfu_bms_status.launch`
 
 
