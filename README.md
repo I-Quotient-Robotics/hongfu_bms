@@ -11,7 +11,7 @@ Hongfu Power Lithium Battery\
 
 ## environment
 Ubuntu16.04\
-ROS-kinetic\
+ROS-kinetic
 ## node info
 * Topic name: bms
 * message type: Hongfustatus.msg
