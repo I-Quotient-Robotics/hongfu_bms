@@ -17,11 +17,11 @@ public:
     bool findpack = false;    
     std::vector<uint8_t> buffer_all, buffer_vol;
     int looprate_bms;
-    
     HongfuBmsStatus(ros::NodeHandle& nod);
     bool initport();
     void dataread();
-    std::vector<uint8_t> dataRead(float datetype, float checksumW, uint16_t buffer_sum, uint16_t checksumR, std::vector<uint8_t> buffer);
+    std::vector<uint8_t> dataRead(float datetype, float checksumW, uint16_t buffer_sum, 
+        uint16_t checksumR, std::vector<uint8_t> buffer);
     void dataParsing(std::vector<uint8_t>& all, std::vector<uint8_t>& vol);
     std::vector<int> error_id;
     std::string error_info[13] = {"Monomer Overvoltage Protection", "Single undervoltage protection",
@@ -41,9 +41,6 @@ private:
     uint32_t status_balance;
     int baudrate_bms, cell_number, residual_capacity, design_capacity, cycle_index, rsoc,
         ntc, ntc_number, day_pro, month_pro, year_pro;  
-    
     void hongfuCallback();
-
-
 };
 #endif

@@ -68,8 +68,7 @@ void HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<
         statue_mos = buffer_read[24];
         cell_number = buffer_read[25];
         ntc_number = buffer_read[26];
-        for (int i = 0; i < ntc_number*2; i+=2)
-        {
+        for (int i = 0; i < ntc_number*2; i+=2) {
             ntfC[i/2] = ((buffer_all[27+i]<<8|buffer_all[28+i])-2731)/10.0;
         }
         day_pro = (data_pro&0x1f);
@@ -95,12 +94,8 @@ void HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<
         for (int i = 0; i < ntc_number; ++i) {
             hongfuStatus.NtcTem.push_back(ntfC[i]);
         }
-        for (int i = 0; i < 13; ++i)
-        {
-            // hongfuStatus.ErrorId.push_back(i);
-            // hongfuStatus.ErrorInfo.push_back(error_info[i]);            
+        for (int i = 0; i < 13; ++i) {
             if((status_protect & (0x0001>>i)>>i)==1){
-            // if(((0x0001 & (0x0001<<i))>>i)==1){
             hongfuStatus.ErrorId.push_back(i);
             hongfuStatus.ErrorInfo.push_back(error_info[i]);  
             }

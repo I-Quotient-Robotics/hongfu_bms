@@ -10,9 +10,7 @@ int main(int argc, char *argv[])
     ros::NodeHandle nod("~");
     HongfuBmsStatus hongfuBmsStatus(nod);  
     hongfuBmsStatus.initport();
-    // ros::Rate loop_rate(hongfuBmsStatus.looprate_bms);
-    ros::Rate loop_rate(10);
-
+    ros::Rate loop_rate(hongfuBmsStatus.looprate_bms);
     while(ros::ok) {
         hongfuBmsStatus.buffer_vol.clear();
         hongfuBmsStatus.buffer_all.clear();
@@ -26,11 +24,11 @@ int main(int argc, char *argv[])
             hongfuBmsStatus.buffer_vol = hongfuBmsStatus.dataRead(0x04, 0xFC, buffer_sumall, checksumall, bufferV);
             hongfuBmsStatus.timeNow = ros::Time::now();
         }
-        catch (serial::SerialException& e){
+        catch (serial::SerialException& e) {
             hongfuBmsStatus.bms_ser_.close();
             hongfuBmsStatus.initport();
         }
-        catch (serial::IOException& e){
+        catch (serial::IOException& e) {
             hongfuBmsStatus.bms_ser_.close();
             hongfuBmsStatus.initport();
         } 
