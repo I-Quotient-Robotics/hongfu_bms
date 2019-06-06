@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(hongfu_bms)
+project(hongfu_bms_driver)
 
 add_compile_options(-std=c++11)
 

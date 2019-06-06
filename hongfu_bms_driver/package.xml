@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>hongfu_bms</name>
+  <name>hongfu_bms_driver</name>
   <version>1.0.0</version>
-  <description>The hongfu_bms package</description>
+  <description>The hongfu_bms_driver package</description>
 
   <maintainer email="hangliu@iquotient-robotics.com">liu</maintainer>
 

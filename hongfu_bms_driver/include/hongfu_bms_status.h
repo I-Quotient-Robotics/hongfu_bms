@@ -5,13 +5,13 @@
 #include "sensor_msgs/Imu.h"
 #include "serial/serial.h"
 #include "string.h"
-#include "hongfu_bms/Hongfustatus.h"
+#include "hongfu_bms_msg/Hongfustatus.h"
 #include "vector"
 #include "boost/format.hpp"
 class HongfuBmsStatus {
 
 public:
-    hongfu_bms::Hongfustatus hongfuStatus;
+    hongfu_bms_msg::Hongfustatus hongfuStatus;
     serial::Serial bms_ser_;
     ros::Time timeNow;
     bool findpack = false;    

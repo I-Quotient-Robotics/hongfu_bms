@@ -12,7 +12,7 @@ HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
     nod.param<std::string>("Hongfu_id", hongfu_id, "hongfu_bms");
     nod.param<int>("Looprate_bms", looprate_bms, 2);
     nod.param<int>("Baudrate_bms", baudrate_bms, 9600);
-    hongfu_pub_ = nod.advertise<hongfu_bms::Hongfustatus>("hongfu_bms", 1); 
+    hongfu_pub_ = nod.advertise<hongfu_bms_msg::Hongfustatus>("hongfu_bms", 1); 
 }
 
 void HongfuBmsStatus::hongfuCallback() {
