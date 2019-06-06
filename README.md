@@ -6,13 +6,20 @@ Information will be displayed dynamically depending on the number of batteries a
 You can also get the error 
 bits of information and the error content.
 ## Equipment type
-Hongfu Power Lithium Battery
+Hongfu Power Lithium Battery\
+[name](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/144283718.jpg)
+
 ## environment
 Ubuntu16.04\
-ROS-kinetic\
+ROS-kinetic
 ## node info
-Topic name of the publishing message is bms，the message type is Hongfustatus.msg.Three node parameters,\
-serial port name:Port_bms,Default value：/dev/ttyUSB0;baudrate name:Baudrate_bms,Default value:9600;looprate name:Looprate_bms,Default value:2;frame_id:Hongfu_id,Default value:hongfu_bms;
+* Topic name: bms
+* message type: Hongfustatus.msg
+* Three node parameters(param,name,default)
+  * serial port,Port_bms,/dev/ttyUSB0
+  * baudrate,Baudrate_bms,9600
+  * looprate,Looprate_bms,2
+  * frame_id,Hongfu_id,hongfu_bms
 ## install
 `git clone https://github.com/I-Quotient-Robotics/iqr_hongfu_bms`\
 \
@@ -25,6 +32,8 @@ serial port name:Port_bms,Default value：/dev/ttyUSB0;baudrate name:Baudrate_bm
 `cd workspace`\
 \
 `catkin_make`\
+\
+`source /devel/setup.bash`\
 \
 `roslaunch hongfu_bms_bringup hongfu_bms_status.launch`
 
