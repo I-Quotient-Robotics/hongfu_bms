@@ -32,7 +32,7 @@ ROS-kinetic
 ## rules
 `sudo cp hongfu_bms_driver/udev/10-hongfu-bms.rules /etc/udev/rules.d/ or /lib/udec/rules.d`\
 \
-`sudo udevadm control-reload-rules && udevadm trigger`
+`sudo udevadm control--reload-rules && udevadm trigger`
 ## run
 `cd workspace`\
 \
