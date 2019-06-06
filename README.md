@@ -7,7 +7,8 @@ You can also get the error
 bits of information and the error content.
 ## Equipment type
 Hongfu Power Lithium Battery\
-[name](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/144283718.jpg)
+![](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/144283718.jpg)
+![](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/60348685.jpg)
 
 ## environment
 Ubuntu16.04\
