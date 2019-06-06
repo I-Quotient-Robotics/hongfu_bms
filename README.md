@@ -1,10 +1,9 @@
 # iqr_hongfu_bms
 ### Battery Management System BMS
 ## use
-Read battery-related information returned by BMS，You can configure device serial password, baud rate and frame rate from outside,
+Read battery-related information returned by BMS，You can configure serial port name, baudrate and loop rate from outside,
 Information will be displayed dynamically depending on the number of batteries and temperature sensors，\
-You can also get the error 
-bits of information and the error content.
+You can also get the error bits of information and the error content.
 ## Equipment type
 Hongfu Power Lithium Battery\
 ![](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/144283718.jpg)
