@@ -23,10 +23,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(hongfu_bms_status src/hongfu_bms_status.cpp src/hongfu_bms_status_f.cpp)
+add_executable(hongfu_bms_status_node src/hongfu_bms_status_node.cpp src/hongfu_bms_status.cpp)
 
-add_dependencies(hongfu_bms_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(hongfu_bms_status_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(hongfu_bms_status
+target_link_libraries(hongfu_bms_status_node
   ${catkin_LIBRARIES}
 )

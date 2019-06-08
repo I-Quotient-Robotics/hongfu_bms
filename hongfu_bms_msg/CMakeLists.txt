@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
    FILES
-   Hongfustatus.msg
+   HongfuStatus.msg
  )
 
 generate_messages(
