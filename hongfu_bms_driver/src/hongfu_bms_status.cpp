@@ -7,7 +7,7 @@ const std::string error_info[13] = {"Monomer Overvoltage Protection", "Single un
   "Charging Overcurrent Protection", "Discharge Overcurrent Protection", 
   "Short circuit protection", "Front-end IC error detection", "Software Lock-in MOS"};  
 
-HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
+IQR::HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
   buffer_write_[0] = 0xDD;
   buffer_write_[1] = 0xA5;
   buffer_write_[3] = 0x00;
@@ -20,11 +20,19 @@ HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
   hongfu_pub_ = nod.advertise<hongfu_bms_msg::HongfuStatus>("hongfu_bms", 1); 
 }
 
-void HongfuBmsStatus::hongfuCallback() {
+void IQR::HongfuBmsStatus::hongfuCallback() {
 }
 
-bool HongfuBmsStatus::initPort() {
+bool IQR::HongfuBmsStatus::initPort(int argc, char *argv[]) {
   ros::Rate loop_openport(0.2);
+  // argv[argc] = '\0';
+  // std::string path_node_str_[1]; 
+  // path_node_str_[0] = argv[0];
+  // std::string  path_node_str_ = (boost::format("%s") % argv[0]).str();
+  // int position = path_node_str_.rfind('/');
+  // std::string ss = path_node_str_.substr(position);
+  // ss += '\0';
+  
   while(!bms_ser_.isOpen()) {
     try {
       bms_ser_.setPort(port_bms_);
@@ -32,7 +40,7 @@ bool HongfuBmsStatus::initPort() {
       serial::Timeout t_out = serial::Timeout::simpleTimeout(1000);
       bms_ser_.setTimeout(t_out);
       bms_ser_.open();
-      ROS_INFO_STREAM("Serial port initialized");
+      ROS_INFO("[%s]Serial port initialized", argv[0]);
     }
     catch (serial::IOException& e) {
       ROS_ERROR_STREAM("Unable to open port ");
@@ -42,7 +50,7 @@ bool HongfuBmsStatus::initPort() {
   }
 }
 
-void HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<uint8_t>& buffer_vol) {
+void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<uint8_t>& buffer_vol) {
 
   if (buffer_read.size()!=0) {
     voltage_ = (buffer_read[4]<<8|buffer_read[5])/100.0;
@@ -112,7 +120,7 @@ void HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<
   }
 }
 
-std::vector<uint8_t> HongfuBmsStatus::dataRead(float date_type, float checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer) {
+std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer) {
   int index = 0;
   buffer_write_[2] = date_type;
   buffer_write_[5] = checksum_write;
@@ -139,11 +147,11 @@ std::vector<uint8_t> HongfuBmsStatus::dataRead(float date_type, float checksum_w
   }
     catch (serial::SerialException& e) {
       bms_ser_.close();
-      initPort();
+      // initPort();
     }
     catch (serial::IOException& e) {
       bms_ser_.close();
-      initPort();
+      // initPort();
     }                 
   return buffer;
 }

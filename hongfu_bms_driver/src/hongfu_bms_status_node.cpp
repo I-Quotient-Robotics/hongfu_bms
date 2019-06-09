@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
   std::vector<uint8_t> bufferV;
   ros::init(argc, argv, "hongfu_bms_status");
   ros::NodeHandle nod("~");
-  HongfuBmsStatus hongfuBmsStatus(nod);  
-  hongfuBmsStatus.initPort();
+  IQR::HongfuBmsStatus hongfuBmsStatus(nod);  
+  hongfuBmsStatus.initPort(argc, argv);
   ros::Rate loop_rate(hongfuBmsStatus.looprate_bms_);
   while(ros::ok) {
     hongfuBmsStatus.buffer_vol_.clear();
