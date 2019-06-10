@@ -9,7 +9,8 @@ int main(int argc, char *argv[])
   ros::init(argc, argv, "hongfu_bms_status");
   ros::NodeHandle nod("~");
   IQR::HongfuBmsStatus hongfuBmsStatus(nod);  
-  hongfuBmsStatus.initPort(argc, argv);
+  hongfuBmsStatus.initPort(argv);
+  // hongfuBmsStatus.initPort();
   ros::Rate loop_rate(hongfuBmsStatus.looprate_bms_);
   while(ros::ok) {
     hongfuBmsStatus.buffer_vol_.clear();
@@ -18,8 +19,8 @@ int main(int argc, char *argv[])
     hongfuBmsStatus.hongfu_status_.CellVoltage.clear();
     hongfuBmsStatus.hongfu_status_.ErrorId.clear();
     hongfuBmsStatus.hongfu_status_.ErrorInfo.clear();
-    hongfuBmsStatus.buffer_all_ = hongfuBmsStatus.dataRead(0x03, 0xFD, buffer_sum_all, checksum_all, bufferV);
-    hongfuBmsStatus.buffer_vol_ = hongfuBmsStatus.dataRead(0x04, 0xFC, buffer_sum_all, checksum_all, bufferV);
+    hongfuBmsStatus.buffer_all_ = hongfuBmsStatus.dataRead(0x03, 0xFD, buffer_sum_all, checksum_all, bufferV, argv);
+    hongfuBmsStatus.buffer_vol_ = hongfuBmsStatus.dataRead(0x04, 0xFC, buffer_sum_all, checksum_all, bufferV, argv);
     hongfuBmsStatus.time_now_ = ros::Time::now();
     hongfuBmsStatus.dataParsing(hongfuBmsStatus.buffer_all_, hongfuBmsStatus.buffer_vol_);
   ros::spinOnce();

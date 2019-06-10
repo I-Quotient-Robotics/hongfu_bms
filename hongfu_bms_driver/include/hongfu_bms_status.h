@@ -20,9 +20,10 @@ public:
     std::vector<uint8_t> buffer_all_, buffer_vol_, path_node_vec_;
     int looprate_bms_;
     HongfuBmsStatus(ros::NodeHandle& nod);
-    bool initPort(int argc, char *argv[]);
+    bool initPort(char *argv[]);
+    // bool initPort();
     std::vector<uint8_t> dataRead(float date_type, float check_sum_write, uint16_t buffer_sum, 
-        uint16_t check_sum_read, std::vector<uint8_t> buffer);
+        uint16_t check_sum_read, std::vector<uint8_t> buffer, char* argv[]);
     void dataParsing(std::vector<uint8_t>& all, std::vector<uint8_t>& vol);
     std::vector<int> error_id_;  
 
