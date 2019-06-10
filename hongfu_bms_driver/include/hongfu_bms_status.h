@@ -17,7 +17,7 @@ namespace IQR{
       serial::Serial bms_ser_;
       ros::Time time_now_;
       bool findpack = false;    
-      std::vector<uint8_t> buffer_all_, buffer_vol_, path_node_vec_;
+      std::vector<uint8_t> buffer_all_, buffer_vol_;
       int looprate_bms_;
       HongfuBmsStatus(ros::NodeHandle& nod);
       bool initPort();
@@ -28,7 +28,7 @@ namespace IQR{
 
   private:
       ros::Publisher hongfu_pub_;
-      std::string port_bms_, hongfu_id_, data_production_string_, path_node_str_; 
+      std::string port_bms_, hongfu_id_, data_production_string_; 
       float ntf_data_[10], cell_[30];
       float voltage_, current_;
       uint8_t buffer_write_[7];

@@ -41,7 +41,7 @@ bool IQR::HongfuBmsStatus::initPort() {
       ROS_ERROR("[%s]Unable to open port ", ss.c_str());
       ROS_ERROR("[%s]Try again,wait 5 secs", ss.c_str()); 
       dataParsing(buffer_all_, buffer_vol_);
-      loop_openport.sleep(); 
+      loop_openport.sleep();
     }        
   }
 }
