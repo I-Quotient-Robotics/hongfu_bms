@@ -1,11 +1,11 @@
 #include "hongfu_bms_status.h"
 
-const std::string error_info[13] = {"Monomer Overvoltage Protection", "Single undervoltage protection",
+const std::string error_info[14] = {"Monomer Overvoltage Protection", "Single undervoltage protection",
   "Overvoltage protection of whole group", "Overall undervoltage protection", 
   "Charging Overtemperature Protection", "Charging cryogenic protection", 
   "Discharge Overtemperature Protection", "Discharge cryogenic protection", 
   "Charging Overcurrent Protection", "Discharge Overcurrent Protection", 
-  "Short circuit protection", "Front-end IC error detection", "Software Lock-in MOS"};  
+  "Short circuit protection", "Front-end IC error detection", "Software Lock-in MOS", "Unable to open port"};  
 
 IQR::HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
   buffer_write_[0] = 0xDD;
@@ -116,7 +116,7 @@ void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::ve
   }
   else if(!bms_ser_.isOpen()) {
     hongfu_status_.ErrorId.push_back(13);
-    hongfu_status_.ErrorInfo.push_back("Unable to open port");
+    hongfu_status_.ErrorInfo.push_back(error_info[13]);
     hongfu_pub_.publish(hongfu_status_);
     hongfu_status_.ErrorId.clear();
     hongfu_status_.ErrorInfo.clear();
