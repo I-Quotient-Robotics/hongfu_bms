@@ -23,9 +23,9 @@ IQR::HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
 void IQR::HongfuBmsStatus::hongfuCallback() {
 }
 
-bool IQR::HongfuBmsStatus::initPort(char *argv[]) {
+bool IQR::HongfuBmsStatus::initPort() {
   ros::Rate loop_openport(0.2);
-  std::string path_node_str_ = std::string(argv[0]); 
+  std::string path_node_str_ = std::string(ros::this_node::getName()); 
   int position = path_node_str_.rfind('/');
   std::string ss = path_node_str_.substr(position+1); 
   while(!bms_ser_.isOpen()) {
@@ -123,8 +123,7 @@ void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::ve
   }
 }
 
-std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer,
-    char* argv[]) {
+std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer) {
   int index = 0;
   buffer_write_[2] = date_type;
   buffer_write_[5] = checksum_write;
@@ -151,11 +150,11 @@ std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float check
   }
     catch (serial::SerialException& e) {
       bms_ser_.close();
-      initPort(argv);
+      initPort();
     }
     catch (serial::IOException& e) {
       bms_ser_.close();
-      initPort(argv);
+      initPort();
     }        
   return buffer;
 }
