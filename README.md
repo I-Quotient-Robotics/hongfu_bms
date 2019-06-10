@@ -31,24 +31,22 @@ loop rate.\
 hongfu_id(string,default:hongfu_bms)\
 frame ID for the device.\
 ## install
-`git clone https://github.com/I-Quotient-Robotics/iqr_hongfu_bms`\
-\
-`cd iqr_hongfu_bms`\
-\
-`rosdep install hongfu_bms_driver --ignore-src`\
-\
-`rosdep install hongfu_bms_msg`
+```
+git clone https://github.com/I-Quotient-Robotics/iqr_hongfu_bms
+cd iqr_hongfu_bms
+rosdep install hongfu_bms_driver --ignore-src
+rosdep install hongfu_bms_msg
+```
 ## rules
-`sudo cp hongfu_bms_driver/udev/10-hongfu-bms.rules /etc/udev/rules.d/ or /lib/udec/rules.d`\
-\
-`sudo udevadm control--reload-rules && udevadm trigger`
+```
+sudo cp hongfu_bms_driver/udev/10-hongfu-bms.rules /etc/udev/rules.d/ or /lib/udec/rules.d
+sudo udevadm control--reload-rules && udevadm trigger
 ## run
-`cd workspace`\
-\
-`catkin_make`\
-\
-`source /devel/setup.bash`\
-\
-`roslaunch hongfu_bms_bringup hongfu_bms_status.launch`
+```
+cd workspace
+catkin_make
+source /devel/setup.bash
+roslaunch hongfu_bms_bringup hongfu_bms_status.launch
+```
 
 
