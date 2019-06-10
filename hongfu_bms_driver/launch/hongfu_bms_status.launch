@@ -1,10 +1,10 @@
 <launch>
   <node pkg="hongfu_bms_driver" type="hongfu_bms_status_node" 
     name="hongfu_bms_status" output="screen">
-    <param name="port_bms" value="/dev/port_link_bms" type="string" />
-    <param name="hongfu_id" value="hongfu_bms" type="string" />
-    <param name="baudrate_bms" value="9600" type="int"/>
-    <param name="looprate_bms" value="1" type="int"/>
+    <param name="port" value="/dev/hongfu_bms" type="string" />
+    <param name="frame_id" value="hongfu_bms" type="string" />
+    <param name="baudrate" value="9600" type="int"/>
+    <param name="looprate" value="1" type="int"/>
     <remap from="/hongfu_bms_status/hongfu_bms" to="/bms"/>
   </node>
 </launch>

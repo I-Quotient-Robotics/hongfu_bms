@@ -13,10 +13,13 @@ IQR::HongfuBmsStatus::HongfuBmsStatus(ros::NodeHandle& nod) {
   buffer_write_[3] = 0x00;
   buffer_write_[4] = 0xFF;
   buffer_write_[6] = 0x77;
-  nod.param<std::string>("port_bms", port_bms_, "port_link_bms");
-  nod.param<std::string>("hongfu_id", hongfu_id_, "hongfu_bms");
-  nod.param<int>("looprate_bms", looprate_bms_, 2);
-  nod.param<int>("baudrate_bms", baudrate_bms_, 9600);
+  nod.param<std::string>("port", port_, "hongfu_bms");
+  nod.param<std::string>("frame_id", frame_id_, "hongfu_bms");
+  nod.param<int>("looprate", looprate_, 2);
+  nod.param<int>("baudrate", baudrate_, 9600);
+  path_name_ = std::string(ros::this_node::getName()); 
+  position_ = path_name_.rfind('/');
+  node_name_ = path_name_.substr(position_+1); 
   hongfu_pub_ = nod.advertise<hongfu_bms_msg::HongfuStatus>("hongfu_bms", 1); 
 }
 
@@ -25,21 +28,17 @@ void IQR::HongfuBmsStatus::hongfuCallback() {
 
 bool IQR::HongfuBmsStatus::initPort() {
   ros::Rate loop_openport(0.2);
-  std::string path_node_str_ = std::string(ros::this_node::getName()); 
-  int position = path_node_str_.rfind('/');
-  std::string ss = path_node_str_.substr(position+1); 
   while(!bms_ser_.isOpen()) {
     try {
-      bms_ser_.setPort(port_bms_);
-      bms_ser_.setBaudrate(baudrate_bms_);
+      bms_ser_.setPort(port_);
+      bms_ser_.setBaudrate(baudrate_);
       serial::Timeout t_out = serial::Timeout::simpleTimeout(1000);
       bms_ser_.setTimeout(t_out);
       bms_ser_.open();
-      ROS_INFO("[%s]Serial port initialized", ss.c_str());
+      ROS_INFO("[%s]Serial port initialized", node_name_.c_str());
     }
     catch (serial::IOException& e) {
-      ROS_ERROR("[%s]Unable to open port ", ss.c_str());
-      ROS_ERROR("[%s]Try again,wait 5 secs", ss.c_str()); 
+      ROS_ERROR("[%s]Unable to open port, wait 5 secs and try again", node_name_.c_str());
       dataParsing(buffer_all_, buffer_vol_);
       loop_openport.sleep();
     }        
@@ -48,6 +47,7 @@ bool IQR::HongfuBmsStatus::initPort() {
 
 void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<uint8_t>& buffer_vol) {
 
+  time_now_ = ros::Time::now();
   if (buffer_read.size()!=0) {
     voltage_ = (buffer_read[4]<<8|buffer_read[5])/100.0;
     if (((buffer_read[6] & 0b10000000) >> 7) == 1) {
@@ -77,7 +77,7 @@ void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::ve
         day_production_).str();
    
     hongfu_status_.header.stamp = time_now_;
-    hongfu_status_.header.frame_id = hongfu_id_;
+    hongfu_status_.header.frame_id = frame_id_;
     hongfu_status_.Voltage = voltage_;
     hongfu_status_.Current = current_;
     hongfu_status_.ResidualCapacity = residual_capacity_;
@@ -121,9 +121,15 @@ void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::ve
     hongfu_status_.ErrorId.clear();
     hongfu_status_.ErrorInfo.clear();
   }
+    buffer_vol_.clear();
+    buffer_all_.clear();
+    hongfu_status_.NtcTem.clear();
+    hongfu_status_.CellVoltage.clear();
+    hongfu_status_.ErrorId.clear();
+    hongfu_status_.ErrorInfo.clear();
 }
 
-std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer) {
+std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(uint8_t date_type, uint8_t checksum_write, uint16_t buffer_sum, uint16_t checksum_read, std::vector<uint8_t> buffer) {
   int index = 0;
   buffer_write_[2] = date_type;
   buffer_write_[5] = checksum_write;
