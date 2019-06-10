@@ -19,16 +19,16 @@ hongfu_bms_status is a driver for hongfu_bms. It reads battery info convert to H
 bms(hongfu_bms_msg/HongfuStatus)\
 it publishes bms topic from the hongfu_bms.
 #### Parameters
-port_bms(string,default:/dev/port_link_bms)\
+port_bms(string, default: /dev/port_link_bms)\
 serial port name used in your system.\
 \
-baudrate_bms(int,default:9600)\
+baudrate_bms(int, default: 9600)\
 serial port baud rate.\
 \
-looprate_bms(int,defaule:2)\
+looprate_bms(int, defaule: 2)\
 loop rate.\
 \
-hongfu_id(string,default:hongfu_bms)\
+hongfu_id(string, default: hongfu_bms)\
 frame ID for the device.\
 ## install
 ```
