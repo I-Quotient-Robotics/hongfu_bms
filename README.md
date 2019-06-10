@@ -1,26 +1,35 @@
 # iqr_hongfu_bms
 ### Battery Management System BMS
-## use
+## Overview
 Read battery-related information returned by BMS，You can configure serial port name, baudrate and loop rate from outside,
 Information will be displayed dynamically depending on the number of batteries and temperature sensors，\
 You can also get the error bits of information and the error content.
-## equipment type
+## Equipment Type
 Hongfu Power Lithium Battery\
 ![](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/144283718.jpg)
 ![](https://github.com/I-Quotient-Robotics/iqr_hongfu_bms/blob/master/type_pic/60348685.jpg)
 
-## environment
+## Environment
 Ubuntu16.04\
 ROS-kinetic
-## node parameter
-|param|name|defaule value|
-|--|--|--|
-|topic name|bms|
-|message type|HongfuStatus|
-|serial port|port_bms|/dev/ttyUSB0|
-|baudrate|baudrate_bms|9600|
-|looprate|looprate_bms|2|
-|frame_id|hongfu_id|hongfu_bms|
+## Nodes
+### hongfu_bms_status
+hongfu_bms_status is a driver for hongfu_bms. It reads battery info convert to HongfuStatus message.
+#### Published Topics
+bms(hongfu_bms_msg/HongfuStatus)\
+it publishes bms topic from the hongfu_bms.
+#### Parameters
+port_bms(string,default:/dev/ttyUSB0)\
+serial port name used in your system.\
+\
+baudrate_bms(int,default:9600)\
+serial port baud rate.\
+\
+looprate_bms(int,defaule:1)\
+loop rate.\
+\
+hongfu_id(string,default:hongfu_bms)\
+frame ID for the device.\
 ## install
 `git clone https://github.com/I-Quotient-Robotics/iqr_hongfu_bms`\
 \
