@@ -24,7 +24,6 @@ void IQR::HongfuBmsStatus::hongfuCallback() {
 }
 
 bool IQR::HongfuBmsStatus::initPort(char *argv[]) {
-// bool IQR::HongfuBmsStatus::initPort() {
   ros::Rate loop_openport(0.2);
   std::string path_node_str_ = std::string(argv[0]); 
   int position = path_node_str_.rfind('/');
@@ -36,12 +35,11 @@ bool IQR::HongfuBmsStatus::initPort(char *argv[]) {
       serial::Timeout t_out = serial::Timeout::simpleTimeout(1000);
       bms_ser_.setTimeout(t_out);
       bms_ser_.open();
-      // ROS_INFO("[%s]Serial port initialized", ss.c_str());
-      ROS_INFO_STREAM("[hongfu_bms]Serial port initialized");
+      ROS_INFO("[%s]Serial port initialized", ss.c_str());
     }
     catch (serial::IOException& e) {
-      ROS_ERROR_STREAM("[hongfu_bms]Unable to open port ");
-      ROS_ERROR_STREAM("[hongfu_bms]Try again,wait 5 secs"); 
+      ROS_ERROR("[%s]Unable to open port ", ss.c_str());
+      ROS_ERROR("[%s]Try again,wait 5 secs", ss.c_str()); 
       dataParsing(buffer_all_, buffer_vol_);
       loop_openport.sleep(); 
     }        
@@ -50,12 +48,6 @@ bool IQR::HongfuBmsStatus::initPort(char *argv[]) {
 
 void IQR::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<uint8_t>& buffer_vol) {
 
-  if (!bms_ser_.isOpen())
-  {
-    buffer_read.clear();
-    buffer_vol.clear();
-  }
-  ROS_INFO_STREAM(buffer_read.size());
   if (buffer_read.size()!=0) {
     voltage_ = (buffer_read[4]<<8|buffer_read[5])/100.0;
     if (((buffer_read[6] & 0b10000000) >> 7) == 1) {
@@ -165,6 +157,5 @@ std::vector<uint8_t> IQR::HongfuBmsStatus::dataRead(float date_type, float check
       bms_ser_.close();
       initPort(argv);
     }        
-  // ROS_INFO_STREAM(index);         
   return buffer;
 }

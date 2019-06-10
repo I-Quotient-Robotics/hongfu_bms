@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
   ros::NodeHandle nod("~");
   IQR::HongfuBmsStatus hongfuBmsStatus(nod);  
   hongfuBmsStatus.initPort(argv);
-  // hongfuBmsStatus.initPort();
   ros::Rate loop_rate(hongfuBmsStatus.looprate_bms_);
   while(ros::ok) {
     hongfuBmsStatus.buffer_vol_.clear();
