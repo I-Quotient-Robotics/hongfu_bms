@@ -1,6 +1,7 @@
 #include "hongfu_bms_status.h"
 
-const std::string error_info[14] = {"Monomer Overvoltage Protection", "Single undervoltage protection",
+const std::string error_info[14] = {
+  "Monomer Overvoltage Protection", "Single undervoltage protection",
   "Overvoltage protection of whole group", "Overall undervoltage protection", 
   "Charging Overtemperature Protection", "Charging cryogenic protection", 
   "Discharge Overtemperature Protection", "Discharge cryogenic protection", 
