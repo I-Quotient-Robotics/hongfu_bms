@@ -4,7 +4,7 @@ int main(int argc, char *argv[]) {
   ros::init(argc, argv, "hongfu_bms_status_node");
   ros::NodeHandle private_nh("~");
 
-  IQR::HongfuBmsStatus hongfu_bms_status(private_nh);  
+  iqr::HongfuBmsStatus hongfu_bms_status(private_nh);  
   hongfu_bms_status.initPort();
 
   uint16_t buffer_sum = 0x00;
