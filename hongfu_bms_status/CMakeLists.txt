@@ -24,9 +24,10 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node src/hongfu_bms_status_node.cpp src/hongfu_bms_status.cpp)
+add_executable(${PROJECT_NAME}_can_node src/hongfu_bms_status_can_node.cpp)
 
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_can_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(${PROJECT_NAME}_node
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_can_node ${catkin_LIBRARIES})
