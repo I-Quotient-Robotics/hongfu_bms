@@ -16,6 +16,7 @@ enum RegisterIndex {
   kDesignCapacity = 0x18,
   kFullCapacity = 0x10,
   kResidualCapacity = 0x0F,
+  kChargeCurrent = 0x14,
   kChargeCycle = 0x17,
   kProductionData = 0x1B,
   kVoltage7 = 0x39,
@@ -103,6 +104,9 @@ void CanReceiveCallback(const can_msgs::Frame::ConstPtr& msg) {
       // ROS_INFO("ChargeCycle %d", bms_states.charge_cycle);
       break;
     }
+    case kChargeCurrent: {
+      break;
+    }
     case kVoltage7: {
       bms_states.cell_voltage[6] = (msg->data[1]<<8|msg->data[0])/1000.0;
       // ROS_INFO("Voltage7 %f", bms_states.cell_voltage[6]);
@@ -145,6 +149,8 @@ void CanReceiveCallback(const can_msgs::Frame::ConstPtr& msg) {
 
 int main(int argc, char *argv[]) {
   ros::init(argc, argv, "hongfu_bms_status_can_node");
+  ros::AsyncSpinner spinner(3);
+  spinner.start();
 
   int can_id;
   std::string send_topic, receive_topic;
@@ -156,7 +162,7 @@ int main(int argc, char *argv[]) {
   private_nh.param<std::string>("can_receive_topic", receive_topic, "received_messages");
 
   ros::Publisher can_pub = nh.advertise<can_msgs::Frame>(send_topic, 1000);
-  ros::Subscriber can_sub = nh.subscribe<can_msgs::Frame>(receive_topic, 100, CanReceiveCallback);
+  ros::Subscriber can_sub = nh.subscribe<can_msgs::Frame>(receive_topic, 1000, CanReceiveCallback);
 
   diagnostic_updater::Updater diagnostic_updater;
   diagnostic_updater.setHardwareID("hongfu_bms");
@@ -243,6 +249,11 @@ int main(int argc, char *argv[]) {
 
     frame.header.stamp = ros::Time::now();
     frame.id = (BMS_ID<<17) | (0x01<<16) | (kVoltage1<<8);
+    can_pub.publish(frame);
+    ros::WallDuration(0.1).sleep();
+
+    frame.header.stamp = ros::Time::now();
+    frame.id = (BMS_ID<<17) | (0x01<<16) | (kChargeCurrent<<8);
     can_pub.publish(frame);
     ros::WallDuration(0.1).sleep();
 
