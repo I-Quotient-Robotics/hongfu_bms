@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="log_type" default="screen"/>
+
+  <!-- Socketcan bridge -->
+  <node pkg="socketcan_bridge" type="socketcan_bridge_node" name="socketcan_bridge_node" output="$(arg log_type)">
+    <param name="can_device" type="string" value="can0" />
+  </node>
+
+  <!-- BMS driver -->
+  <node pkg="hongfu_bms_status" type="hongfu_bms_status_can_node" name="hongfu_bms_status_node" output="$(arg log_type)">
+  </node>
+</launch>
