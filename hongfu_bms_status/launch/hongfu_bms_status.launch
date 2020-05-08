@@ -1,6 +1,6 @@
 <launch>
   <node pkg="hongfu_bms_status" type="hongfu_bms_status_node" name="hongfu_bms_status_node" output="screen">
-    <param name="port" value="/dev/hongfu_bms" type="string" />
+    <param name="port" value="/dev/caster_bms" type="string" />
     <param name="frame_id" value="hongfu_bms" type="string" />
     <param name="baudrate" value="9600" type="int"/>
     <param name="looprate" value="1" type="int"/>

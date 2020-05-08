@@ -108,7 +108,7 @@ bool iqr::HongfuBmsStatus::initPort() {
 void iqr::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::vector<uint8_t>& buffer_vol) {
 
   time_now_ = ros::Time::now();
-  if(buffer_read.size()!=0) {
+  if(buffer_read.size()==34) {
     voltage_ = (buffer_read[4]<<8|buffer_read[5])/100.0;
     if(((buffer_read[6] & 0b10000000) >> 7) == 1) {
       current_ = ((buffer_read[6]<<8|buffer_read[7])-65535.0)/100.0;
@@ -164,33 +164,33 @@ void iqr::HongfuBmsStatus::dataParsing(std::vector<uint8_t>& buffer_read,std::ve
         hongfu_status_.ErrorInfo.push_back(error_info[i]);  
       }
     }
-  }
   /////////////****************///////////////
-  if(buffer_vol.size()!=0) {   
-    cell_number_ = buffer_vol[3]/2;
-    for(int i = 0; i < cell_number_*2; i+=2) {
-      cell_[i/2] = (buffer_vol[4+i]<<8|buffer_vol[5+i])/1000.0;
-      hongfu_status_.CellVoltage.push_back(cell_[i/2]);       
-    }   
+    if(buffer_vol.size()==21) {   
+      cell_number_ = buffer_vol[3]/2;
+      // ROS_INFO("%d", buffer_vol.size());
+      for(int i = 0; i < cell_number_*2; i+=2) {
+        cell_[i/2] = (buffer_vol[4+i]<<8|buffer_vol[5+i])/1000.0;
+        hongfu_status_.CellVoltage.push_back(cell_[i/2]);       
+      }   
+    }
+
+    if(hongfu_status_.CellVoltage.size()!=0 && hongfu_status_.NtcTem.size()!=0) {
+      hongfu_pub_.publish(hongfu_status_);
+    } else if(!bms_ser_.isOpen()) {
+      hongfu_status_.ErrorId.push_back(13);
+      hongfu_status_.ErrorInfo.push_back(error_info[13]);
+      hongfu_pub_.publish(hongfu_status_);
+      // hongfu_status_.ErrorId.clear();
+      // hongfu_status_.ErrorInfo.clear();
+    }
+
+    // update diagnostic data
+    diagnostic_updater_.update();
+
+    for(int i=0; i<hongfu_status_.ErrorInfo.size(); i++) {
+      ROS_ERROR("%s", hongfu_status_.ErrorInfo[i].c_str());
+    }
   }
-
-  if(hongfu_status_.CellVoltage.size()!=0 && hongfu_status_.NtcTem.size()!=0) {
-    hongfu_pub_.publish(hongfu_status_);
-  } else if(!bms_ser_.isOpen()) {
-    hongfu_status_.ErrorId.push_back(13);
-    hongfu_status_.ErrorInfo.push_back(error_info[13]);
-    hongfu_pub_.publish(hongfu_status_);
-    // hongfu_status_.ErrorId.clear();
-    // hongfu_status_.ErrorInfo.clear();
-  }
-
-  // update diagnostic data
-  diagnostic_updater_.update();
-
-  for(int i=0; i<hongfu_status_.ErrorInfo.size(); i++) {
-    ROS_ERROR("%s", hongfu_status_.ErrorInfo[i].c_str());
-  }
-
   buffer_vol_.clear();
   buffer_all_.clear();
   hongfu_status_.NtcTem.clear();
@@ -209,7 +209,7 @@ std::vector<uint8_t> iqr::HongfuBmsStatus::dataRead(uint8_t date_type, uint8_t c
     if(bms_ser_.available()) {   
       bms_ser_.read(buffer, bms_ser_.available());
       while(!findpack) {
-        if(buffer[index]==0xDD) {
+        if(buffer[index]==0xDD && buffer.size()>=21) {
           buffer.begin() = buffer.erase(buffer.begin(), buffer.begin()+index);
           checksum_read = buffer[buffer.size()-3]<<8|buffer[buffer.size()-2];
           for(int i = 0; i < buffer.size()-5; ++i) {
