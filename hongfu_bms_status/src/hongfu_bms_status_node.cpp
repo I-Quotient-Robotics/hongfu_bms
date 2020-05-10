@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   uint16_t buffer_sum = 0x00;
   std::vector<uint8_t> buffer_v;
   ros::Rate loop_rate(hongfu_bms_status.looprate_);
-  while(ros::ok) {
+  while(ros::ok()) {
     hongfu_bms_status.buffer_all_ = hongfu_bms_status.dataRead(
         hongfu_bms_status.cmd_status_,
         hongfu_bms_status.cmd_status_sum_,
